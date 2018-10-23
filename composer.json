@@ -1,0 +1,10 @@
+{
+  "name": "kiriakov/csv-import",
+  "description": "application for imort/export data in csv-format",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}

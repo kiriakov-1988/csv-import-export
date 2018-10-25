@@ -5,13 +5,25 @@ namespace App\Controller;
 
 class CSV
 {
+    const CSV_TITLE = [
+        'UID',
+        'Name',
+        'Age',
+        'Email',
+        'Phone',
+        'Gender'
+    ];
+
+    const MAX_FILE_SIZE = 1048576;
+
+    const FILE_TYPE = 'text/csv';
 
     public function importData()
     {
         if (isset($_FILES['userfile']) || !empty($_FILES['userfile'])) {
             if (!$_FILES['userfile']['error']) {
 
-                if (($_FILES['userfile']['size'] <= 1048576) && ($_FILES['userfile']['type'] == 'text/csv')) {
+                if (($_FILES['userfile']['size'] <= self::MAX_FILE_SIZE) && ($_FILES['userfile']['type'] == self::FILE_TYPE)) {
 
                     $csvFile = new \SplFileObject($_FILES['userfile']['tmp_name']);
                     $csvFile->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
@@ -54,7 +66,7 @@ class CSV
         foreach ($csvFile as $row) {
             // выполняет проверку только один раз в начале
             if ($flag) {
-                if (count($row) != 6) {
+                if (count($row) != count(self::CSV_TITLE)) {
                     echo 'кол-во столбиков не равняется заданому';
                     break;
                 }
@@ -83,13 +95,12 @@ class CSV
 
     private function checkTitles(array $row): bool
     {
-        if ($row[0] != 'UID'   &&
-            $row[1] != 'Name'  &&
-            $row[2] != 'Age'   &&
-            $row[3] != 'Email' &&
-            $row[4] != 'Phone' &&
-            $row[5] != 'Gender'
-        ) {
+        if ($row[0] != self::CSV_TITLE[0] &&
+            $row[1] != self::CSV_TITLE[1] &&
+            $row[2] != self::CSV_TITLE[2] &&
+            $row[3] != self::CSV_TITLE[3] &&
+            $row[4] != self::CSV_TITLE[4] &&
+            $row[5] != self::CSV_TITLE[5]) {
             return true;
         }
         return false;

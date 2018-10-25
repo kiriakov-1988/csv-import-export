@@ -7,7 +7,7 @@ class View
 {
     public function getIndexPage()
     {
-        echo 'show view of IndexPage';
+        $this->generate('main_view.php');
         return true;
     }
 
@@ -15,6 +15,11 @@ class View
     {
         echo 'show view of ResultsPage';
         return true;
+    }
+
+    private function generate($content_view, $data = null)
+    {
+        include '../view/template_view.php';
     }
 
 }

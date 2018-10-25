@@ -35,8 +35,6 @@ class Router
     {
         $uri = $this->getURI();
 
-        echo '<pre>';
-
         foreach (self::ROUTES as $uriPattern => $path) {
             // так как здесь обычные постоянные маршруты,
             // то можно просто сравнивать ("==") строки

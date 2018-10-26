@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Model\DB;
+
 class View
 {
     public function getIndexPage()
@@ -13,11 +15,19 @@ class View
 
     public function getResults()
     {
-        echo 'show view of ResultsPage';
+        $db = new DB();
+        $csv = $db->getCsvData();
+
+        $data = [
+            'title' => 'CSV result from DB',
+            'csv' => $csv
+        ];
+
+        $this->generate('results_view.php', $data);
         return true;
     }
 
-    private function generate($content_view, $data = null)
+    private function generate(string $content_view, array $data = null)
     {
         include '../view/template_view.php';
     }

@@ -53,6 +53,23 @@ class DB
 
     }
 
+    public function getCsvData(): array
+    {
+        $sqlQuery = 'SELECT * FROM `csv` ORDER BY `uid`';
+
+        $stmt = $this->connection->prepare($sqlQuery);
+
+        if ($success = $stmt->execute()) {
+            $data = [];
+
+            while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $data[] = $result;
+            }
+
+            return $data;
+        }
+    }
+
 
     // http://thisinterestsme.com/pdo-prepared-multi-inserts/
     // в теории можно превысить длину sql запроса ... но обычно по умлочанию 16 МБ

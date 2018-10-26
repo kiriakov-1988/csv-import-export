@@ -15,12 +15,20 @@ class View
 
     public function getResults(): bool
     {
-        $db = new DB();
-        $csv = $db->getCsvData();
+        try {
+            $db = new DB();
+            $csv = $db->getCsvData();
+            $error = false;
+        } catch (\PDOException $e) {
+            $csv = [];
+            $error = $e->getMessage();
+        }
+
 
         $data = [
             'title' => 'CSV result from DB',
-            'csv' => $csv
+            'csv'   => $csv,
+            'error' => $error
         ];
 
         $this->generate('results_view.php', $data);

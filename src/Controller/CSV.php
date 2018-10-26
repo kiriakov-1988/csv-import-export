@@ -76,7 +76,7 @@ class CSV
                 // Ошибка - вернуть код ошибки
                 $_SESSION['status'] = [
                     'success' => false,
-                    'message' => 'При загрузе файла произошла ошибка - "' . $_FILES['userfile']['error'] . '"!'
+                    'message' => 'При загрузе файла произошла ошибка - код "' . $_FILES['userfile']['error'] . '"!'
                 ];
             }
         } else {
@@ -102,7 +102,48 @@ class CSV
 
     public function exportData(): bool
     {
-        echo 'export data';
+        try {
+            $db = new DB();
+            $data = $db->getCsvData();
+
+            if ($data) {
+
+                $now = date("Ymd-His");
+
+                $fileName = 'export-from-db(' . $now . ').csv';
+
+                // force download
+                header("Content-Type: application/force-download");
+                header("Content-Type: application/octet-stream");
+                header("Content-Type: application/download");
+
+                header('Content-Type: application/csv; charset=utf-8');
+                header('Content-Disposition: attachment; filename=' . $fileName);
+
+                $fp = fopen('php://output', 'w');
+
+                fputcsv($fp, self::CSV_TITLE);
+
+                foreach ($data as $row) {
+                    fputcsv($fp, $row);
+                }
+
+            } else {
+                $_SESSION['error'] = [
+                    'message' => 'В базе данных уже нет доступных csv-данных для скачивания! Возможно их удалили.'
+                ];
+
+                header('Location: /view-results');
+            }
+
+        } catch (\PDOException $e) {
+            $_SESSION['error'] = [
+                'message' => 'Ошибка подключения к базе данных - ' . $e->getMessage() . '!'
+            ];
+
+            header('Location: /view-results');
+        }
+
         return true;
     }
 
@@ -119,7 +160,7 @@ class CSV
                 if (count($row) != count(self::CSV_TITLE)) {
                     $_SESSION['status'] = [
                         'success' => false,
-                        'message' => 'Количество столбиков в csv-файле не соответствует заданому'
+                        'message' => 'Количество столбиков в csv-файле не соответствует заданому (файл не корректный)!'
                     ];
                     break;
                 }
@@ -127,7 +168,7 @@ class CSV
                 if ($this->checkTitles($row)) {
                     $_SESSION['status'] = [
                         'success' => false,
-                        'message' => 'Порядок/тип столбиков в csv-файле не соответствует заданому'
+                        'message' => 'Порядок/тип столбиков в csv-файле не соответствует заданому (файл не корректный)!'
                     ];
                     break;
                 }
@@ -149,7 +190,7 @@ class CSV
         if (!count($csvData) && !isset($_SESSION['status'])) {
             $_SESSION['status'] = [
                 'success' => false,
-                'message' => 'В csv-файле нет допустимых данных для загрузки'
+                'message' => 'В csv-файле нет допустимых данных для загрузки! В т.ч. после проведения валидации над данными ячеек!'
             ];
         }
 

@@ -11,3 +11,13 @@ if (isset($_SESSION['status'])) {
 
     $_SESSION['status'] = null;
 }
+
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+
+    if ($error['message']) {
+        echo "<p class=\"p3 text-danger\">{$error['message']}</p>";
+    }
+
+    $_SESSION['error'] = null;
+}

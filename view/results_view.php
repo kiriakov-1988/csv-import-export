@@ -31,9 +31,19 @@
 
 <?php else: ?>
 
-    <p class="text-danger">На данный момент в базе еще нету загруженных данных !</p>
+    <?php if ($data['error']): ?>
+
+        <p class="text-danger">Ошибка подключения к базе данных - <?=$data['error']?> !'</p>
+
+    <?php else: ?>
+
+        <p class="text-danger">На данный момент в базе еще нету загруженных данных !</p>
+
+    <?php endif; ?>
 
 <?php endif; ?>
+
+<?php include 'status-message.php'?>
 
 <p class="m-3">
     <a href="/" class="btn btn-outline-primary w-25">Import data</a>

@@ -20,43 +20,87 @@ class CSV
 
     const FILE_TYPE = 'text/csv';
 
-    public function importData()
+    const FILE_EXTENSION = 'csv';
+
+    public function importData(): bool
     {
         if (isset($_FILES['userfile']) || !empty($_FILES['userfile'])) {
             if (!$_FILES['userfile']['error']) {
 
-                if (($_FILES['userfile']['size'] <= self::MAX_FILE_SIZE) && ($_FILES['userfile']['type'] == self::FILE_TYPE)) {
+                $fileExtension = new \SplFileInfo($_FILES['userfile']['name']);
+                $fileExtension = $fileExtension->getExtension();
+
+                if (($_FILES['userfile']['size'] <= self::MAX_FILE_SIZE)
+                        && ($_FILES['userfile']['type'] == self::FILE_TYPE)
+                            && ($fileExtension == self::FILE_EXTENSION)) {
 
                     $csvFile = new \SplFileObject($_FILES['userfile']['tmp_name']);
                     $csvFile->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
 
-                    echo '<pre>';
+                    if ($csvData = $this->getCsvArrayWithoutTitle($csvFile)) {
+                        // Выполняться будет только в случае наличия соответствующих данных (и при отсутсвии ошибок
+                        // Сообщение самой ошибки уже было сформировано
 
-                    $csvData = $this->getCsvArrayWithoutTitle($csvFile);
-                    // TODO проверить на пустоту
+                        try {
+                            $db = new DB();
+                            if ($db->addCsvData($csvData)) {
+                                $_SESSION['status'] = [
+                                    'success' => true,
+                                    'message' => 'Csv-данные успешно загруженны в Базу данных!'
+                                ];
+                            } else {
+                                $_SESSION['status'] = [
+                                    'success' => false,
+                                    'message' => 'Произошла ошибка при загрузке csv-данных в Базу данных!'
+                                ];
+                            }
 
-                    print_r($csvData);
 
-                    $db = new DB();
-                    var_dump($db->addCsvData($csvData));
+                        } catch (\PDOException $e) {
+                            $_SESSION['status'] = [
+                                'success' => false,
+                                'message' => 'Ошибка подключения к базе данных - ' . $e->getMessage() . '!'
+                            ];
+                        }
 
-                    echo '</pre>';
+                    }
 
                 } else {
-                    echo 'Превышен размер';
+                    $_SESSION['status'] = [
+                        'success' => false,
+                        'message' => 'Превышен размер или неправильное расширение/тип файла !'
+                    ];
                 }
 
             } else {
                 // Ошибка - вернуть код ошибки
+                $_SESSION['status'] = [
+                    'success' => false,
+                    'message' => 'При загрузе файла произошла ошибка - "' . $_FILES['userfile']['error'] . '"!'
+                ];
             }
         } else {
-            // Не был выбран файл для загрузки !
+            $_SESSION['status'] = [
+                'success' => false,
+                'message' => 'Не был выбран файл для загрузки !'
+            ];
         }
 
+        // для наглядности просто добавлена небольшая пауза - 0,5 секунд,
+        // а то на локальной машине происходит моментальная перезагрузка страницы
+        usleep(500000);
+
+        // Тут надо учитывать что согласно php manual не все клиенты (браузеры) могут
+        // правильно принять данный относительный адрес.
+        // Поэтому в реальном приложении может следует использовать или константу с адресом
+        // или получать из переменных масива $_SERVER
+        header('Location: /');
+
+        // возвращаем true так как маршрут отработал (здесь и далее)
         return true;
     }
 
-    public function exportData()
+    public function exportData(): bool
     {
         echo 'export data';
         return true;
@@ -73,12 +117,18 @@ class CSV
             // выполняет проверку только один раз в начале
             if ($flag) {
                 if (count($row) != count(self::CSV_TITLE)) {
-                    echo 'кол-во столбиков не равняется заданому';
+                    $_SESSION['status'] = [
+                        'success' => false,
+                        'message' => 'Количество столбиков в csv-файле не соответствует заданому'
+                    ];
                     break;
                 }
 
                 if ($this->checkTitles($row)) {
-                    echo 'Порядок/тип столбиков не соответствуют заданому';
+                    $_SESSION['status'] = [
+                        'success' => false,
+                        'message' => 'Порядок/тип столбиков в csv-файле не соответствует заданому'
+                    ];
                     break;
                 }
 
@@ -96,6 +146,14 @@ class CSV
             }
         }
 
+        if (!count($csvData) && !isset($_SESSION['status'])) {
+            $_SESSION['status'] = [
+                'success' => false,
+                'message' => 'В csv-файле нет допустимых данных для загрузки'
+            ];
+        }
+
+        // в случае ошибки - не соответствие кол-ва или порядка/типа столбиков - данный масив так же будет пуст
         return $csvData;
     }
 

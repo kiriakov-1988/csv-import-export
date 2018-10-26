@@ -7,49 +7,58 @@ class DB
 {
     const DB = CONFIG_DB;
 
-
     private $connection;
 
     public function __construct()
     {
-        try {
-            $this->connection = new \PDO(self::DB['driver'].':host='. self::DB['host'] .';dbname='. self::DB['name'],
-                self::DB['user'],
-                self::DB['pass']);
-        } catch (\PDOException $e) {
-            // TODO проверка подключения PDO
-            print_r($e->getMessage());
-        }
+
+        $this->connection = new \PDO(self::DB['driver'].':host='. self::DB['host'] .';dbname='. self::DB['name'],
+            self::DB['user'],
+            self::DB['pass']);
 
     }
 
     public function addCsvData(array $csvData): bool
     {
+        // По хорошему при добавлении масива данных можно использовать транзакции,
+        // и в случае ошибки возвращать Базу данных к первоначальному состоянию.
+        // Но здесь будет реализован базовый функционал с сохранением удавшихся подзапросов.
+
         if ($this->checkNotEmptyTable()) {
 
             $filtredCsvData = [];
 
             foreach ($csvData as $row) {
                 if ($this->checkIssetUid($row['UID'])) {
-                    $this->updateRow($row);
-                    // проверка !!
+
+                    if (!$this->updateRow($row)) {
+                        return false;
+                    }
+
                 } else {
                     $filtredCsvData[] = $row;
                 }
             }
 
             if (count($filtredCsvData)) {
-                $this->pdoMultiInsert($filtredCsvData);
+
+                if (!$this->pdoMultiInsert($filtredCsvData)) {
+                    return false;
+                }
+
             }
 
-
+            return true;
 
         } else {
-            $this->pdoMultiInsert($csvData);
+
+            if ($this->pdoMultiInsert($csvData)) {
+                return true;
+            }
 
         }
 
-        return true;
+        return false;
 
     }
 
@@ -68,12 +77,14 @@ class DB
 
             return $data;
         }
+
+        return [];
     }
 
 
     // http://thisinterestsme.com/pdo-prepared-multi-inserts/
     // в теории можно превысить длину sql запроса ... но обычно по умлочанию 16 МБ
-    private function pdoMultiInsert($data)
+    private function pdoMultiInsert($data): bool
     {
 
         //Will contain SQL snippets.
@@ -143,7 +154,8 @@ class DB
             return $result['num'];
         }
 
-        // TODO в случае ошибки вернется, как то разграничить с пустым результатом
+        // вернетчя в случае ошибки, может нужно как то и разграничить с пустым результатом
+        // но данная ошибка маловероятна при общей положительной работе СУБД
         return false;
     }
 
@@ -167,11 +179,10 @@ class DB
         $stmt->bindParam(':phone', $row['Phone']);
         $stmt->bindParam(':gender',$row['Gender']);
 
-        $stmt->execute();
-        // проверки
+        if ($stmt->execute()) {
+            return true;
+        }
 
-
-
-        return true;
+        return false;
     }
 }

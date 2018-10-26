@@ -12,4 +12,6 @@
     </p>
 </form>
 
+<?php include 'status-message.php'?>
+
 <a href="/view-results" class="btn btn-outline-primary w-25">View results</a>

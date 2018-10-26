@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Model\DB;
+
 class CSV
 {
     const CSV_TITLE = [
@@ -35,6 +37,9 @@ class CSV
 
                     print_r($csvData);
 
+                    $db = new DB();
+                    var_dump($db->addCsvData($csvData));
+
                     echo '</pre>';
 
                 } else {
@@ -57,6 +62,7 @@ class CSV
         return true;
     }
 
+    // TODO отметить в документации, что данный функционал можно перенести и в МОДЕЛЬ
     private function getCsvArrayWithoutTitle(\SplFileObject $csvFile): array
     {
         $csvData = [];
@@ -86,7 +92,7 @@ class CSV
                     // Достаточно первых двух проверок в самом начале цикла
                     continue;
                 }
-                $csvData[] = $row;
+                $csvData[] = $this->getAssocArr($row);
             }
         }
 
@@ -145,5 +151,20 @@ class CSV
         }
 
         return true;
+    }
+
+    private function getAssocArr(array $row): array
+    {
+        $assocArr = [
+            self::CSV_TITLE[0] => $row[0],
+            self::CSV_TITLE[1] => $row[1],
+            self::CSV_TITLE[2] => $row[2],
+            self::CSV_TITLE[3] => $row[3],
+            self::CSV_TITLE[4] => $row[4],
+            self::CSV_TITLE[5] => $row[5],
+        ];
+
+
+        return $assocArr;
     }
 }

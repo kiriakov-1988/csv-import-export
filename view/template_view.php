@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Импорт/экспорт CSV файлов!</title>
+    <title><?=$data['title'] ?? 'Импорт/экспорт CSV файлов!' ?></title>
     <!-- TODO динамически менять заголовок -->
 
     <!-- Bootstrap CSS -->
@@ -16,7 +16,11 @@
   </head>
   <body>
 
-    <?php include $content_view; ?>
+      <div class="container text-center">
+
+        <?php include $content_view; ?>
+
+      </div>
 
   </body>
 </html>

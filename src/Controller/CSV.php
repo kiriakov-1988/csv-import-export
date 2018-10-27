@@ -91,12 +91,6 @@ class CSV
 
                 $fileName = 'export-from-db(' . $now . ').csv';
 
-                // force download
-                // TODO удалить это как излишнее ...
-                header("Content-Type: application/force-download");
-                header("Content-Type: application/octet-stream");
-                header("Content-Type: application/download");
-
                 header('Content-Type: application/csv; charset=utf-8');
                 header('Content-Disposition: attachment; filename=' . $fileName);
 

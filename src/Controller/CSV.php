@@ -44,46 +44,25 @@ class CSV
                         try {
                             $db = new DB();
                             if ($db->addCsvData($csvData)) {
-                                $_SESSION['status'] = [
-                                    'success' => true,
-                                    'message' => 'Csv-данные успешно загруженны в Базу данных!'
-                                ];
+                                $this->addSessionStatus('Csv-данные успешно загруженны в Базу данных!', true);
                             } else {
-                                $_SESSION['status'] = [
-                                    'success' => false,
-                                    'message' => 'Произошла ошибка при загрузке csv-данных в Базу данных!'
-                                ];
+                                $this->addSessionStatus('Произошла ошибка при загрузке csv-данных в Базу данных!');
                             }
 
-
                         } catch (\PDOException $e) {
-                            $_SESSION['status'] = [
-                                'success' => false,
-                                'message' => 'Ошибка подключения к базе данных - ' . $e->getMessage() . '!'
-                            ];
+                            $this->addSessionStatus('Ошибка подключения к базе данных - ' . $e->getMessage() . '!');
                         }
-
                     }
 
                 } else {
-                    $_SESSION['status'] = [
-                        'success' => false,
-                        'message' => 'Превышен размер или неправильное расширение/тип файла !'
-                    ];
+                    $this->addSessionStatus('Превышен размер или неправильное расширение/тип файла !');
                 }
 
             } else {
-                // Ошибка - вернуть код ошибки
-                $_SESSION['status'] = [
-                    'success' => false,
-                    'message' => 'При загрузе файла произошла ошибка - код "' . $_FILES['userfile']['error'] . '"!'
-                ];
+                $this->addSessionStatus('При загрузе файла произошла ошибка - код "' . $_FILES['userfile']['error'] . '"!');
             }
         } else {
-            $_SESSION['status'] = [
-                'success' => false,
-                'message' => 'Не был выбран файл для загрузки !'
-            ];
+            $this->addSessionStatus('Не был выбран файл для загрузки !');
         }
 
         // для наглядности просто добавлена небольшая пауза - 0,5 секунд,
@@ -113,6 +92,7 @@ class CSV
                 $fileName = 'export-from-db(' . $now . ').csv';
 
                 // force download
+                // TODO удалить это как излишнее ...
                 header("Content-Type: application/force-download");
                 header("Content-Type: application/octet-stream");
                 header("Content-Type: application/download");
@@ -137,6 +117,7 @@ class CSV
             }
 
         } catch (\PDOException $e) {
+            // данное сессионное сообщение пока используется дважды, поэтому в отдельный метод не будет вынесено
             $_SESSION['error'] = [
                 'message' => 'Ошибка подключения к базе данных - ' . $e->getMessage() . '!'
             ];
@@ -184,18 +165,12 @@ class CSV
             // выполняет проверку только один раз в начале
             if ($flag) {
                 if (count($row) != count(self::CSV_TITLE)) {
-                    $_SESSION['status'] = [
-                        'success' => false,
-                        'message' => 'Количество столбиков в csv-файле не соответствует заданому (файл не корректный)!'
-                    ];
+                    $this->addSessionStatus('Количество столбиков в csv-файле не соответствует заданому (файл не корректный)!');
                     break;
                 }
 
                 if ($this->checkTitles($row)) {
-                    $_SESSION['status'] = [
-                        'success' => false,
-                        'message' => 'Порядок/тип столбиков в csv-файле не соответствует заданому (файл не корректный)!'
-                    ];
+                    $this->addSessionStatus('Порядок/тип столбиков в csv-файле не соответствует заданому (файл не корректный)!');
                     break;
                 }
 
@@ -213,11 +188,9 @@ class CSV
             }
         }
 
+        // дополнительная проверка на наличие уже сообщения (об ошибке) в сессии
         if (!count($csvData) && !isset($_SESSION['status'])) {
-            $_SESSION['status'] = [
-                'success' => false,
-                'message' => 'В csv-файле нет допустимых данных для загрузки! В т.ч. после проведения валидации над данными ячеек!'
-            ];
+            $this->addSessionStatus('В csv-файле нет допустимых данных для загрузки! В т.ч. после проведения валидации над данными ячеек!');
         }
 
         // в случае ошибки - не соответствие кол-ва или порядка/типа столбиков - данный масив так же будет пуст
@@ -293,6 +266,8 @@ class CSV
         return $assocArr;
     }
 
+    // как вариант можно вынести в отдельный класс с соответствующим статическим методом ...
+    // но пока эта опция используется только в этом классе
     private function addSessionStatus(string $message, bool $success = false): void
     {
         $_SESSION['status'] = [

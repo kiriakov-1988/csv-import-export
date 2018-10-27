@@ -12,7 +12,7 @@
     </p>
 </form>
 
-<?php include 'status-message.php'?>
+<?php include 'session-message.php'?>
 
 <form method="post" action="/clear-all-records">
         <input class="btn btn-danger" type="submit" name="clear" value="Clear all records" />

@@ -43,7 +43,7 @@
 
 <?php endif; ?>
 
-<?php include 'status-message.php'?>
+<?php include 'session-message.php'?>
 
 <p class="m-3">
     <a href="/" class="btn btn-outline-primary w-25">Import data</a>

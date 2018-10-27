@@ -147,6 +147,32 @@ class CSV
         return true;
     }
 
+    public function deleteData(): bool
+    {
+        if (isset($_POST['clear'])) {
+            try {
+                $db = new DB();
+                $result = $db->deleteCsvData();
+
+                if ($result) {
+
+                    $this->addSessionStatus('Csv-данные в таблице базы дынных успешно удалены!', true);
+
+                } else {
+                    $this->addSessionStatus('Произошла ошибка при удалении данных из таблицы базы!');
+                }
+
+            } catch (\PDOException $e) {
+                $this->addSessionStatus('Ошибка подключения к базе данных - ' . $e->getMessage() . '!');
+            }
+        } else {
+            $this->addSessionStatus('К маршруту "Удалить все записи" нельзя напрямую обращаться!');
+        }
+
+        header('Location: /');
+        return true;
+    }
+
     // TODO отметить в документации, что данный функционал можно перенести и в МОДЕЛЬ
     private function getCsvArrayWithoutTitle(\SplFileObject $csvFile): array
     {
@@ -266,4 +292,13 @@ class CSV
 
         return $assocArr;
     }
+
+    private function addSessionStatus(string $message, bool $success = false): void
+    {
+        $_SESSION['status'] = [
+            'success' => $success,
+            'message' => $message
+        ];
+    }
+
 }

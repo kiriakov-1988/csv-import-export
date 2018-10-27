@@ -14,4 +14,10 @@
 
 <?php include 'status-message.php'?>
 
-<a href="/view-results" class="btn btn-outline-primary w-25">View results</a>
+<form method="post" action="/clear-all-records">
+        <input class="btn btn-danger" type="submit" name="clear" value="Clear all records" />
+</form>
+
+<p class="p-4">
+    <a href="/view-results" class="btn btn-outline-primary w-25">View results</a>
+</p>

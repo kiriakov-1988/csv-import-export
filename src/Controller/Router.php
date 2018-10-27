@@ -18,6 +18,7 @@ class Router
         'import-csv' => 'CSV/importData',
         'view-results' => 'View/getResults',
         'export-to-csv' => 'CSV/exportData',
+        'clear-all-records' => 'CSV/deleteData',
         '' => 'View/getIndexPage',
     ];
 

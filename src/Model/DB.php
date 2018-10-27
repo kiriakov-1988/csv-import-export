@@ -81,6 +81,21 @@ class DB
         return [];
     }
 
+    public function deleteCsvData(): bool
+    {
+        $sqlQuery = 'TRUNCATE TABLE `csv`';
+
+        $stmt = $this->connection->prepare($sqlQuery);
+
+        if ($success = $stmt->execute()) {
+
+            return true;
+        }
+
+        return false;
+
+    }
+
 
     // http://thisinterestsme.com/pdo-prepared-multi-inserts/
     // в теории можно превысить длину sql запроса ... но обычно по умлочанию 16 МБ

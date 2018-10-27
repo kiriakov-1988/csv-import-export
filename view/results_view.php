@@ -1,8 +1,8 @@
 <?php if (count($data['csv'])): ?>
 
-    <h1 class="h3 pt-3">Ранее загруженные данные:</h1>
+    <h1 class="h3 p-3">Ранее загруженные данные:</h1>
 
-    <table class="table table-striped">
+    <table class="table table-bordered table-striped" id="result-table">
         <thead class="thead-dark">
             <tr>
                 <th>UID</th>
@@ -48,3 +48,6 @@
 <p class="m-3">
     <a href="/" class="btn btn-outline-primary w-25">Import data</a>
 </p>
+
+<script src='/js/tablesort.min.js'></script>
+<script src='/js/tablesort.number.min.js'></script>

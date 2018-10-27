@@ -1,6 +1,6 @@
-<h1 class="h3">Результат ранее загруженных данных</h1>
-
 <?php if (count($data['csv'])): ?>
+
+    <h1 class="h3 pt-3">Ранее загруженные данные:</h1>
 
     <table class="table table-striped">
         <thead class="thead-dark">
@@ -37,7 +37,7 @@
 
     <?php else: ?>
 
-        <p class="text-danger">На данный момент в базе еще нету загруженных данных !</p>
+        <h1 class="h3 p-3 text-danger">На данный момент в базе еще нету загруженных данных !</h1>
 
     <?php endif; ?>
 

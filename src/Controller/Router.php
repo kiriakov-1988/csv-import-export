@@ -59,8 +59,8 @@ class Router
         }
 
         header("HTTP/1.1 404 Not Found");
-        // TODO вывести страницу с ошибкой
-        echo "404 ошибка !!";
+        $view = new View();
+        $view->showError();
         return;
     }
 

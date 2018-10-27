@@ -35,6 +35,13 @@ class View
         return true;
     }
 
+    public function showError(): void
+    {
+        $this->generate('404-error_view.php', [
+            'title' => 'Ошибка 404',
+        ]);
+    }
+
     private function generate(string $content_view, array $data = null): void
     {
         include '../view/template_view.php';

@@ -10,3 +10,5 @@ define('CONFIG_DB', [
     'pass' => '789521',
     'name' => 'csv_data',
 ]);
+
+// TODO добавить настройки apache !!

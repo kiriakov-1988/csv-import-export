@@ -7,12 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title><?=$data['title'] ?? 'Импорт/экспорт CSV файлов!' ?></title>
-    <!-- TODO динамически менять заголовок -->
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-
 
   </head>
   <body>

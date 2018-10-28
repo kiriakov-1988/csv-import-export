@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>CSV result from DB</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+
+</head>
+<body>
+
+<div class="container text-center">
+
+
+    <h1 class="h3 p-3">Ранее загруженные данные:</h1>
+
+    <p class="text-muted">
+        Для сортировки - кликайте по названию столбика. <br>
+        Для фильтрации - введите текст в соответствующее поле (и нажмите Enter) или выберите из выпадающего списка.
+    </p>
+
+    <table class="table table-bordered table-striped" id="result-table">
+        <thead class="thead-dark">
+        <tr>
+            <th>UID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th style="min-width: 100px">Gender</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>1</th>
+            <td>Alex</td>
+            <td>22</td>
+            <td>alex@textmail.com</td>
+            <td>01243453425</td>
+            <td>male</td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td>Helen</td>
+            <td>17</td>
+            <td>helen@textmail.com</td>
+            <td>06457634543</td>
+            <td>female</td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td>Max</td>
+            <td>45</td>
+            <td>Max-1@textmail.com</td>
+            <td>07657324322</td>
+            <td>male</td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td>John</td>
+            <td>12</td>
+            <td>j@textmail.com</td>
+            <td>09345723467</td>
+            <td>male</td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td>Ivan</td>
+            <td>77</td>
+            <td>Ivan-777@textmail.com</td>
+            <td>02345324543</td>
+            <td>male</td>
+        </tr>
+        <tr>
+            <th>6</th>
+            <td>Peter</td>
+            <td>35</td>
+            <td>pp@textmail.com</td>
+            <td>07456342343</td>
+            <td>male</td>
+        </tr>
+        <tr>
+            <th>7</th>
+            <td>Ann</td>
+            <td>53</td>
+            <td>annie@textmail.com</td>
+            <td>08563445233</td>
+            <td>female</td>
+        </tr>
+        <tr>
+            <th>8</th>
+            <td>Matt</td>
+            <td>33</td>
+            <td>mett@textmail.com</td>
+            <td>06435433452</td>
+            <td>male</td>
+        </tr>
+        <tr>
+            <th>9</th>
+            <td>Kate</td>
+            <td>21</td>
+            <td>katerina@textmail.com</td>
+            <td>02453546444</td>
+            <td>female</td>
+        </tr>
+        <tr>
+            <th>10</th>
+            <td>Jack</td>
+            <td>43</td>
+            <td>jj@textmail.com</td>
+            <td>08967443234</td>
+            <td>male</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <a href="#" class="btn btn-info w-100">Export to CSV</a>
+    </p>
+
+
+
+    <p class="m-3">
+        <a href="/" class="btn btn-outline-primary w-25">Import data</a>
+    </p>
+
+    <script src='/public/js/tablesort/tablesort.min.js'></script>
+    <script src='/public/js/tablesort/tablesort.number.min.js'></script>
+    <script src='/public/js/tablefilter/tablefilter.js'></script>
+</div>
+
+<script src="/public/js/scripts.js"></script>
+
+</body>
+</html>

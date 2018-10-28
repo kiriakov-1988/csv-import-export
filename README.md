@@ -55,3 +55,7 @@ _Сортировка и фильтрация реализована путем 
 
 </VirtualHost>
 ```
+
+***
+Посмотреть как выглядить примерно данное приложение можно по ссылке [GitHub Page of this project](https://kiriakov-1988.github.io/csv-import-export/ "Example of app (only HTML and JS)").
+Но там доступен только функционал фронтенда...

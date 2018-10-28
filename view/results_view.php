@@ -2,15 +2,20 @@
 
     <h1 class="h3 p-3">Ранее загруженные данные:</h1>
 
+    <p class="text-muted">
+        Для сортировки - кликайте по названию столбика. <br>
+        Для фильтрации - введите текст в соответствующее поле (и нажмите Enter) или выберите из выпадающего списка.
+    </p>
+
     <table class="table table-bordered table-striped" id="result-table">
         <thead class="thead-dark">
             <tr>
                 <th>UID</th>
-                <th>name</th>
-                <th>age</th>
-                <th>email</th>
-                <th>phone</th>
-                <th>gender</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th style="min-width: 100px">Gender</th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +32,9 @@
         </tbody>
     </table>
 
-    <a href="/export-to-csv" class="btn btn-info w-100">Export to CSV</a>
+    <p>
+        <a href="/export-to-csv" class="btn btn-info w-100">Export to CSV</a>
+    </p>
 
 <?php else: ?>
 
@@ -49,5 +56,6 @@
     <a href="/" class="btn btn-outline-primary w-25">Import data</a>
 </p>
 
-<script src='/js/tablesort.min.js'></script>
-<script src='/js/tablesort.number.min.js'></script>
+<script src='/js/tablesort/tablesort.min.js'></script>
+<script src='/js/tablesort/tablesort.number.min.js'></script>
+<script src='/js/tablefilter/tablefilter.js'></script>

@@ -1,5 +1,5 @@
 {
-  "name": "kiriakov/csv-import",
+  "name": "kiriakov-1988/csv-import",
   "description": "application for imort/export data in csv-format",
   "type": "project",
   "autoload": {

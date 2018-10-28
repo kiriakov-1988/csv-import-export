@@ -1,5 +1,7 @@
 <?php
 
+// Данные сообщения генерируются в классе App\Controller\CSV
+
 if (isset($_SESSION['status'])) {
     $status = $_SESSION['status'];
 

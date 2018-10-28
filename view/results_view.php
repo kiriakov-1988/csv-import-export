@@ -1,4 +1,7 @@
-<?php if (count($data['csv'])): ?>
+<?php
+    // данная переменная получается из App\Controller\View::generate()
+    if (count($data['csv'])):
+?>
 
     <h1 class="h3 p-3">Ранее загруженные данные:</h1>
 

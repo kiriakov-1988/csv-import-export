@@ -17,7 +17,11 @@
 
       <div class="container text-center">
 
-        <?php include $content_view; ?>
+        <?php
+            // данная переменная получается из App\Controller\View::generate()
+            // в т.ч. и заголовок страницы
+            include $content_view;
+        ?>
 
       </div>
 

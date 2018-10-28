@@ -8,5 +8,5 @@ define('CONFIG_DB', [
     'host' => 'localhost',
     'user' => 'root',
     'pass' => '789521',
-    'name' => 'csv_data',
+    'name' => 'csv_data2',
 ]);

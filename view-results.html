@@ -127,7 +127,7 @@
 
 
     <p class="m-3">
-        <a href="/" class="btn btn-outline-primary w-25">Import data</a>
+        <a href="https://kiriakov-1988.github.io/csv-import-export/" class="btn btn-outline-primary w-25">Import data</a>
     </p>
 
     <script src='public/js/tablesort/tablesort.min.js'></script>
@@ -135,7 +135,46 @@
     <script src='public/js/tablefilter/tablefilter.js'></script>
 </div>
 
-<script src="public/js/scripts.js"></script>
+<!--
+    <script src="public/js/scripts.js"></script>
+    Сам скрипт описан отдельно далее в теле страницы,
+    так как стили фильтрации при такой структуре папок не отображаются коректно
+-->
+
+<script type="text/javascript">
+    var elem = document.getElementById("message");
+    if (elem) {
+        setTimeout(function() {
+            elem.parentNode.removeChild(elem);
+        }, 5000);
+    }
+
+    if (document.getElementById('result-table')) {
+        new Tablesort(document.getElementById('result-table'));
+
+        var tf = new TableFilter(document.querySelector('#result-table'), {
+            base_path: 'public/js/tablefilter/',
+            col_5: 'select',
+            fixed_headers: true,
+            rows_counter: {
+                text: 'Users: '
+            },
+            btn_reset: {
+                text: 'Очистить фильтры'
+            },
+            col_types: [
+                'number',
+                'string',
+                'number',
+                'string',
+                'string',
+                'string'
+            ],
+            highlight_keywords: true
+        });
+        tf.init();
+    }
+</script>
 
 </body>
 </html>

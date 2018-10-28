@@ -20,7 +20,7 @@
     <h1 class="h3 pt-5">Выберите файл для импорта на сервер</h1>
     <p class="text-monospace text-info">(только CSV формат, размер не более 1 Мб)</p>
 
-    <form enctype="multipart/form-data" method="post" action="#" onsubmit="return checkForm(this)">
+    <form enctype="multipart/form-data" method="post" action="https://kiriakov-1988.github.io/csv-import-export/" onsubmit="return checkForm(this)">
 
         <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
 
@@ -32,7 +32,7 @@
     </form>
 
 
-    <form method="post" action="#">
+    <form method="post" action="https://kiriakov-1988.github.io/csv-import-export/">
         <input class="btn btn-danger" type="submit" name="clear" value="Clear all records" onclick="return allowDeletion();" />
     </form>
 
@@ -42,8 +42,6 @@
 
     <script src="public/js/form-checker.js"></script>
 </div>
-
-<script src="public/js/scripts.js"></script>
 
 </body>
 </html>
